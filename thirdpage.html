@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>third page</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            height: 100vh; 
+            width: 100vw; 
+            display: flex;
+            flex-direction: column;
+        }
+        /* Full Black Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        /* Animated Glowing Grid */
+        .grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: 50px 50px;
+            background-image: linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            animation: moveGrid 8s linear infinite;
+            opacity: 0.4;
+        }
+
+        /* Grid Animation */
+        @keyframes moveGrid {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: -50px -50px, -50px -50px; }
+        }
+
+        /* Soft Glowing Particle Effect */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: cyan;
+            border-radius: 50%;
+            opacity: 0.6;
+            box-shadow: 0px 0px 8px cyan;
+            animation: moveParticles 6s infinite linear;
+        }
+
+        .particle:nth-child(1) { top: 20%; left: 10%; animation-duration: 4s; }
+        .particle:nth-child(2) { top: 50%; left: 40%; animation-duration: 6s; }
+        .particle:nth-child(3) { top: 70%; left: 80%; animation-duration: 5s; }
+        .particle:nth-child(4) { top: 30%; left: 60%; animation-duration: 7s; }
+        .particle:nth-child(5) { top: 80%; left: 20%; animation-duration: 5s; }
+
+        /* Particle Movement */
+        @keyframes moveParticles {
+            0% { transform: translateY(0px) scale(1); opacity: 0.6; }
+            50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+            100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+        }
+        .logout-btn {
+            background: cyan;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .logout-btn:hover {
+            background: darkred;
+            box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.7);
+        }
+
+        .container{
+            align-items: center;
+        }
+        .container h1{
+            text-shadow: 0 0 15px cyan;
+            animation: textGlow 2s infinite alternate ease-in-out;
+            color: white;
+            font-size: 3rem;
+            margin-left: 300px;
+            padding: 10px;
+            margin-top: 50px;
+            font-family:cursive;
+        }
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 15px cyan; }
+            100% { text-shadow: 0 0 30px white; }
+        }
+        .container h4{
+            text-shadow: 0 0 15px cyan;
+            animation: textGlow 2s infinite alternate ease-in-out;
+            color: white;
+            font-size: 1.8rem;
+            margin-left: 370px;
+            padding: 5px;
+        }
+       /* Experience Box Container */
+        .box {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center;
+            gap: 30px; /* Space between boxes */
+            margin-top: 30px;
+        }
+
+        /* Individual Experience Boxes */
+        .box div {
+            width: 180px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.7); /* Transparent black */
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 16px;
+            color: white;
+            font-weight: 900;
+            line-height: 1.2; /* Prevents text breaking into too many lines */
+            box-shadow: 0px 0px 10px rgba(0, 255, 255, 0.5); /* Neon Glow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            backdrop-filter: blur(5px); /* Glass effect */
+            cursor: pointer;
+            padding: 10px; /* Space inside boxes */
+            min-width: 180px; /* Ensures consistency */
+        }
+
+        /* Hover Effect */
+        .box div:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Ensures Consistent Font Size */
+        .box div h4 {
+            text-shadow: 0 0 15px cyan;
+            animation: textGlow 2s infinite alternate ease-in-out;
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            color: white;
+        }
+        .box div.active {
+            background: cyan;
+            color: black;
+            box-shadow: 0 0 20px cyan;
+            transform: scale(1.1);
+        }
+        /* Browse Templates Button */
+        .browse-btn {
+            background: rgba(0, 0, 0, 0.8);
+            color: cyan;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: 2px solid cyan;
+            border-radius: 10px;
+            cursor: pointer;
+            width:300px;
+            margin-top:50px;
+            margin-left:520px;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        .browse-btn:hover {
+            background: cyan;
+            color: black;
+            box-shadow: 0 0 20px cyan;
+        }
+
+        /* Popup Overlay */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* Popup Content */
+        .popup-content {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 0 20px cyan;
+            width: 60%;
+            max-width: 600px;
+        }
+        .popup-content h2{
+            color: white;
+            font-size: 2rem;
+        }  
+        .first ,.second h4{
+            color: white;
+            font-size: 1.3rem;
+        }
+        /* Resume Box */
+        .resume {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 20px;
+        }
+
+        /* Resume Option Boxes */
+        .resume div {
+            border: 2px solid cyan;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0 0 10px cyan;
+            cursor: pointer;
+        }
+
+        .resume div:hover {
+            background: cyan;
+            color: black;
+            transform: scale(1.05);
+        }
+
+        /* Images */
+        .resume img {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+        a{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="grid"></div>
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <div class="container">
+        <h1>How long have you been working?</h1>
+        <h4>We'll find the best templates for your experience level</h4>
+        <div class="box">
+            <div class="first"><h4>No experience</h4></div>
+            <div class="second"><h4>Less than 3 years</h4></div>
+            <div class="third"><h4>3-5 years</h4></div>
+            <div class="fourth"><h4>5-10 years</h4></div>
+            <div class="fifth"><h4>10+ years</h4></div>
+        </div>
+    </div>
+
+    <!-- Browse Templates Button -->
+    <button class="browse-btn" onclick="showPopup()" >Browse Templates</button>
+
+    <div class="popup-overlay" id="popup">
+    <div class="popup-content">
+        <h2>Which one do you want?</h2>
+        <div class="resume">
+            <a href="romeresume.html"><div class="first">
+                <img src="./photo resume.webp" alt="Photo Resume">
+                <h4>Resume with Photo</h4>
+            </div></a>
+            <a href="./templatepage.html"><div class="second">
+                <img src="./resume without photo.jpg" alt="Without Photo Resume">
+                <h4>Resume without Photo</h4>
+            </div></a>
+        </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const options = document.querySelectorAll(".box div");
+
+        options.forEach(option => {
+            option.addEventListener("click", function () {
+                // Remove "active" class from all buttons
+                options.forEach(btn => btn.classList.remove("active"));
+                // Add "active" class to the clicked button
+                this.classList.add("active");
+                });
+            });
+        });
+        function showPopup() {
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+        function logout() {
+            window.location.href = "../php files/logout.php"; // Adjusted Path
+        }
+    </script>
+</html>

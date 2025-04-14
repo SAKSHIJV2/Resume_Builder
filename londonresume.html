@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            gap:10px;
+        }
+
+        .form-container {
+            width: 45%;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .resume-container {
+            
+            background: white;
+            padding: 30px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            width: 100%; /* Adjust width for A4 scaling */
+            max-width: 800px;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        h2 {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 60px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Centering Address & Contact Info in Resume */
+        #resume-address, #resume-phone, #resume-email {
+            text-align: center;
+            font-weight: bold;
+        }
+        .left, .right {
+            page-break-inside: avoid; /* Prevents sections from cutting off */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Left Side: Form for user input -->
+        <div class="form-container">
+            <h2>Fill Your Details</h2>
+            <form id="resumeForm">
+                <label>Name:</label>
+                <input type="text" id="name" placeholder="Your Name">
+                
+                <label>Address:</label>
+                <input type="text" id="address" placeholder="City, Country">
+                
+                <label>Phone:</label>
+                <input type="text" id="phone" placeholder="Your Phone">
+                
+                <label>Email:</label>
+                <input type="text" id="email" placeholder="Your Email">
+                
+                <label>Summary:</label>
+                <textarea id="summary" placeholder="Brief summary about you"></textarea>
+                
+                <label>Skills (comma separated):</label>
+                <input type="text" id="skills" placeholder="Skill1, Skill2, Skill3">
+                
+                <label>Experience:</label>
+                <textarea id="experience" placeholder="Your experience details"></textarea>
+                
+                <label>Education:</label>
+                <textarea id="education" placeholder="Your education details"></textarea>
+
+                <label>Languages:</label>
+                <input type="text" id="languages" placeholder="English, Spanish">
+                
+                <label>Hobbies:</label>
+                <input type="text" id="hobbies" placeholder="Music, Travel, Reading">
+                
+                <button type="button" onclick="generateResume()">Generate Resume</button>
+                <button type="button" onclick="downloadPDF()">Download as PDF</button>
+            </form>
+        </div>
+
+        <!-- Right Side: Resume Preview -->
+        <div class="resume-container">
+            <h1 id="resume-name">Your Name</h1>
+            <p id="resume-address">City, Country</p>
+            <p id="resume-phone">Your Phone</p>
+            <p id="resume-email">Your Email</p>
+
+            <h2>SUMMARY</h2>
+            <p id="resume-summary">Your summary here...</p>
+
+            <h2>SKILLS</h2>
+            <ul id="resume-skills">
+                <li>Skill 1</li>
+                <li>Skill 2</li>
+                <li>Skill 3</li>
+            </ul>
+
+            <h2>EXPERIENCE</h2>
+            <p id="resume-experience">Your experience details...</p>
+
+            <h2>EDUCATION</h2>
+            <p id="resume-education">Your education details...</p>
+            
+            <h2>LANGUAGES</h2>
+            <p id="resume-languages">English, Spanish, German</p>
+            
+            <h2>HOBBIES</h2>
+            <p id="resume-hobbies">Music, Travel, Reading</p>
+        </div>
+    </div>
+    <textarea id="resumeInput" placeholder="Enter resume text..."></textarea>
+    <button type="button" onclick="checkGrammar()">Check Grammar / spelling</button> 
+    <p>Corrected Text: <span id="correctedText"></span></p>
+    <!-- Load jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function generateResume() {
+            document.getElementById("resume-name").innerText = document.getElementById("name").value || "Your Name";
+            document.getElementById("resume-address").innerText = document.getElementById("address").value || "City, Country";
+            document.getElementById("resume-phone").innerText = document.getElementById("phone").value || "Your Phone";
+            document.getElementById("resume-email").innerText = document.getElementById("email").value || "Your Email";
+            document.getElementById("resume-summary").innerText = document.getElementById("summary").value || "Your summary here...";
+            document.getElementById("resume-experience").innerText = document.getElementById("experience").value || "Your experience details...";
+            document.getElementById("resume-education").innerText = document.getElementById("education").value || "Your education details...";
+            document.getElementById("resume-languages").innerText = document.getElementById("languages").value || "English, Spanish, German";
+            document.getElementById("resume-hobbies").innerText = document.getElementById("hobbies").value || "Music, Travel, Reading";
+
+            let skills = document.getElementById("skills").value.split(",");
+            let skillsList = document.getElementById("resume-skills");
+            skillsList.innerHTML = "";
+            skills.forEach(skill => {
+                let li = document.createElement("li");
+                li.innerText = skill.trim();
+                skillsList.appendChild(li);
+            });
+        }
+
+        function downloadPDF() {
+            let resumeElement = document.querySelector(".resume-container"); // Corrected selector
+
+            let options = {
+                margin: 8, // Standard margins
+                filename: "Resume.pdf",
+                image: { type: "jpeg", quality: 1 },
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true,  // Prevents image loading issues
+                    scrollY: 0, // Fix blank space issue
+                },
+                jsPDF: { 
+                    unit: "mm", 
+                    format: "a4", 
+                    orientation: "portrait"
+                }
+            };
+
+            html2pdf().set(options).from(resumeElement).save();
+        }
+        async function checkGrammar() {
+    let userText = document.getElementById("resumeInput").value;
+
+    if (!userText.trim()) {
+        alert("Please enter some text.");
+        return;
+    }
+
+    try {
+        let response = await fetch("https://api.languagetool.org/v2/check", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                "text": userText,
+                "language": "en-US"
+            })
+        });
+
+        let result = await response.json();
+
+        if (result.matches.length > 0) {
+            let correctedText = userText;
+            result.matches.reverse().forEach(match => {
+                if (match.replacements.length > 0) {
+                    let bestReplacement = match.replacements[0].value; // Choose first suggestion
+                    correctedText = correctedText.substring(0, match.offset) +
+                                    bestReplacement +
+                                    correctedText.substring(match.offset + match.length);
+                }
+            });
+
+            document.getElementById("correctedText").innerText = correctedText;
+        } else {
+            document.getElementById("correctedText").innerText = "No corrections needed.";
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("correctedText").innerText = "Error checking grammar!";
+    }
+}
+
+    </script>
+
+</body>
+</html>

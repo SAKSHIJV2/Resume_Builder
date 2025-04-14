@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: auto;
+            gap: 20px;
+            
+        }
+
+        .form-container {
+            width: 50%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            height: 700px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+        }
+        .form-group button {
+            margin-right: 10px; /* Add spacing between button and input field */
+        }
+
+
+        .form-group label {  
+            width: 48%; 
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #555;
+        }
+
+        .resume-container {
+            width: 210mm;
+            min-height: auto; /* Allow it to fit content */
+            max-height: 297mm; /* Restrict it within A4 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 1.5%;
+        }
+
+        .resume h1, .resume p {
+            text-align: center;
+        }
+        .resume {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .resume h1 {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .resume p {
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .resume-section {
+            width: 100%;
+            background: white;
+            padding: 15px;
+            
+            margin-top: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .resume-section h2 {
+            font-size: 18px;
+            border-bottom: 2px solid black;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .resume ul {
+            list-style: none;
+            padding: 0;
+            text-align:left;
+        }
+
+        .resume ul li {
+            padding: 5px 0;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid black;
+            object-fit: cover; /* Ensures correct image display */
+            margin-bottom: 10px;
+        }
+        #resume-skills {
+            text-align: center; /* Centers the text inside the list */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+        }
+        @media print {
+            body {
+                font-family: 'Poppins', sans-serif;
+            }
+            .profile-pic {
+                width: 100px;  /* Ensure the image size is controlled */
+                height: 100px;
+                border-radius: 50%;
+            }
+            .resume-section {
+                page-break-inside: avoid;  /* Prevents sections from splitting across pages */
+                margin-bottom: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Left Side: Form -->
+    <div class="form-container">
+        <h2>Fill Your Details</h2>
+        <form id="resumeForm">
+            <label>Name:</label>
+            <input type="text" id="name" placeholder="Your Name">
+
+            <label>Profile Picture:</label>
+            <input type="file" id="profilePic" accept="image/*" onchange="previewImage(event)">
+
+            <label>Address:</label>
+            <input type="text" id="address" placeholder="City, Country">
+
+            <label>Phone:</label>
+            <input type="text" id="phone" placeholder="Your Phone">
+
+            <label>Email:</label>
+            <input type="text" id="email" placeholder="Your Email">
+
+            <label>Profile Summary:</label>
+            <textarea id="summary" placeholder="Brief summary about you"></textarea>
+            
+
+            <label>Skills (comma separated):</label>
+            <input type="text" id="skills" placeholder="Skill1, Skill2, Skill3">
+
+            <label>Languages:</label>
+            <input type="text" id="languages" placeholder="English, Spanish">
+
+            <label>Employment History:</label>
+            <textarea id="experience" placeholder="Job Title - Company Name\nStart Date - End Date\nJob description"></textarea>
+            
+
+            <button type="button" onclick="generateResume()">Generate Resume</button>
+            <button type="button" onclick="downloadPDF()">Download as PDF</button>
+
+        </form>
+    </div>
+
+    <!-- Right Side: Resume Preview -->
+    <div class="resume-container">
+        <img id="resume-pic" class="profile-image" src="" alt="Profile Picture">
+        <div class="resume">
+            <h1 id="resume-name">Your Name</h1>
+            <p id="resume-address">Your Address</p>
+            <p id="resume-phone">Your Phone</p>
+            <p id="resume-email">Your Email</p>
+
+            <div class="resume-section">
+                <h2>Profile</h2>
+                <p id="resume-summary">Your profile description...</p>
+            </div>
+
+            <div class="resume-section">
+                <h2>Skills</h2>
+                <ul id="resume-skills">
+                    <li>Skill 1</li>
+                    <li>Skill 2</li>
+                </ul>
+            </div>
+
+            <div class="resume-section">
+                <h2>Languages</h2>
+                <p id="resume-languages">English, Spanish</p>
+            </div>
+
+            <div class="resume-section">
+                <h2>Employment History</h2>
+                <p id="resume-experience">Your employment details...</p>
+            </div>
+        </div>
+    </div>
+</div>
+<textarea id="resumeInput" placeholder="Enter resume text..."></textarea>
+<button type="button" onclick="checkGrammar()">Check Grammar / spelling</button> 
+<p>Corrected Text: <span id="correctedText"></span></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    function generateResume() {
+        let name = document.getElementById("name").value.trim();
+        let email = document.getElementById("email").value.trim();
+
+        if (!name || !email) {
+            alert("Name and Email are required fields!");
+            return;
+        }
+
+        document.getElementById("resume-name").innerText = name;
+        document.getElementById("resume-address").innerText = document.getElementById("address").value || "Your Address";
+        document.getElementById("resume-phone").innerText = document.getElementById("phone").value || "Your Phone";
+        document.getElementById("resume-email").innerText = email;
+        document.getElementById("resume-summary").innerText = document.getElementById("summary").value || "Your profile description...";
+        document.getElementById("resume-experience").innerText = document.getElementById("experience").value || "Your employment details...";
+        document.getElementById("resume-languages").innerText = document.getElementById("languages").value || "English, Spanish";
+
+        let skills = document.getElementById("skills").value.split(",").map(skill => skill.trim()).filter(skill => skill);
+        document.getElementById("resume-skills").innerHTML = skills.length ? skills.map(skill => `<li>${skill}</li>`).join("") : "<li>No skills added.</li>";
+    }
+
+
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById("resume-pic").src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    // Ensure there is a default profile picture
+    document.getElementById("resume-pic").src = "https://via.placeholder.com/120";
+
+
+    function downloadPDF() {
+        let resumeElement = document.querySelector(".resume-container");
+
+        let options = {
+            margin: [10, 10, 10, 10],
+            filename: "Resume.pdf",
+            image: { type: "jpeg", quality: 1 },
+            html2canvas: { 
+                scale: 2,  // Use a higher scale for better clarity
+                scrollY: 0 
+            },
+            jsPDF: { 
+                unit: "mm", 
+                format: "a4", 
+                orientation: "portrait"
+            }
+        };
+
+        html2pdf().set(options).from(resumeElement).save();
+    }
+    async function checkGrammar() {
+    let userText = document.getElementById("resumeInput").value;
+
+    if (!userText.trim()) {
+        alert("Please enter some text.");
+        return;
+    }
+
+    try {
+        let response = await fetch("https://api.languagetool.org/v2/check", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                "text": userText,
+                "language": "en-US"
+            })
+        });
+
+        let result = await response.json();
+
+        if (result.matches.length > 0) {
+            let correctedText = userText;
+            result.matches.reverse().forEach(match => {
+                if (match.replacements.length > 0) {
+                    let bestReplacement = match.replacements[0].value; // Choose first suggestion
+                    correctedText = correctedText.substring(0, match.offset) +
+                                    bestReplacement +
+                                    correctedText.substring(match.offset + match.length);
+                }
+            });
+
+            document.getElementById("correctedText").innerText = correctedText;
+        } else {
+            document.getElementById("correctedText").innerText = "No corrections needed.";
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("correctedText").innerText = "Error checking grammar!";
+    }
+}
+
+
+
+  
+</script>
+
+
+</body>
+</html>

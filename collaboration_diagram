@@ -1,0 +1,19 @@
+digraph "Collaboration Diagram" {
+	U [label="User (Applicant)" shape=box]
+	S [label="AI Resume Builder System" shape=box]
+	D [label=Database shape=box]
+	AI [label="AI Service" shape=box]
+	U -> S [label="1: Select Template"]
+	S -> D [label="2: Fetch Templates"]
+	D -> S [label="3: Return Templates"]
+	S -> U [label="4: Display Templates"]
+	U -> S [label="5: Enter Resume Details"]
+	S -> AI [label="6: Check Grammar & Suggestions"]
+	AI -> S [label="7: Return AI Suggestions"]
+	S -> U [label="8: Display Corrections"]
+	U -> S [label="9: Finalize Resume"]
+	S -> D [label="10: Store Resume Data"]
+	S -> U [label="11: Provide Download Options"]
+	U -> S [label="12: Download Resume"]
+	rankdir=BT
+}

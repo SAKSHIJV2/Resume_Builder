@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+    <style>
+      body{
+            margin: 0;
+            padding: 0;
+            height: 100vh; 
+            width: 100vw; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: -1;
+        }
+
+        /* Floating Circuit Lines */
+        .circuit-line {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: cyan;
+            opacity: 0.4;
+            animation: moveLines 6s infinite linear;
+        }
+
+        .circuit-line:nth-child(1) { top: 10%; left: 15%; animation-duration: 5s; }
+        .circuit-line:nth-child(2) { top: 30%; left: 40%; animation-duration: 7s; }
+        .circuit-line:nth-child(3) { top: 60%; left: 75%; animation-duration: 6s; }
+        .circuit-line:nth-child(4) { top: 80%; left: 25%; animation-duration: 5s; }
+        .circuit-line:nth-child(5) { top: 50%; left: 90%; animation-duration: 8s; }
+
+        @keyframes moveLines {
+            0% { transform: translateY(-50px) scaleY(0.5); opacity: 0.2; }
+            50% { transform: translateY(30px) scaleY(1); opacity: 0.8; }
+            100% { transform: translateY(-50px) scaleY(0.5); opacity: 0.2; }
+        }
+        .box {
+            height: 450px;
+            width: 350px;
+            background: rgba(0, 0, 0, 0.7); /* Transparent black */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid cyan; /* More visible border */
+            box-shadow: 0px 0px 20px cyan, 0px 0px 40px rgba(0, 255, 255, 0.6); /* Stronger glow */
+            animation: fadeInUp 1s ease-in-out;
+            backdrop-filter: blur(8px); /* Glass effect */
+            margin-top: 80px;
+            margin-left: 500px;
+            transition: 0.3s ease-in-out;
+        }
+        .box:hover {
+            box-shadow: 0px 0px 30px cyan, 0px 0px 60px rgba(0, 255, 255, 0.8); /* Enhanced glow on hover */
+            border-color: #00ffff; /* Brighter cyan on hover */
+        }
+        .box h2 {
+            margin-bottom: 30px;
+            color: cyan;
+            font-size: 35px;
+            text-shadow: 0px 0px 10px cyan; /* Glowing text */
+        }
+
+        .input-box {
+            width: 90%;
+            margin-bottom: 15px;
+            height: 8%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            box-shadow: inset 2px 2px 5px rgba(0, 255, 255, 0.2);
+            transition: 0.3s ease-in-out;
+        }
+
+        .input-box:focus {
+            outline: none;
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0px 0px 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .login-btn {
+            width: 95%;
+            padding: 12px;
+            font-size: 18px;
+            color: white;
+            background: cyan;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            text-transform: uppercase;
+            box-shadow: 0px 0px 10px cyan;
+        }
+
+        .login-btn:hover {
+            background: #00ffff;
+            transform: scale(1.05);
+            box-shadow: 0px 0px 15px cyan, 0px 0px 30px cyan;
+        }
+
+        .links {
+            margin-top: 15px;
+            font-size: 14px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: cyan;
+            transition: 0.3s ease-in-out;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+            color: #00ffff;
+        }
+
+        /* Fade-in effect */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Hides the box initially */
+        .hidden {
+            display: none;
+        }  
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="circuit-line"></div>
+        <div class="circuit-line"></div>
+        <div class="circuit-line"></div>
+        <div class="circuit-line"></div>
+        <div class="circuit-line"></div>
+    </div>
+    <!-- Login Form -->
+    <form action="login.php" method="POST" class="box" id="loginBox">
+        <h2>Login</h2>
+        <input type="email" name="email" class="input-box" placeholder="Email" required>
+        <input type="password" name="password" class="input-box" placeholder="Password" required>
+        <button type="submit" class="login-btn">Login</button>
+        <div class="links"> 
+            <a href="#">Forgot Password?</a> | 
+            <a onclick="showSignup()">New user? Sign Up</a>
+        </div>
+    </form>
+
+
+
+    <!-- Signup Form (Initially Hidden) -->
+    <form action="signup.php" method="POST" class="box hidden" id="signupBox">
+        <h2>Sign Up</h2>
+        <input type="text" name="fullname" class="input-box" placeholder="Full Name" required>
+        <input type="email" name="email" class="input-box" placeholder="Email" required>
+        <input type="tel" name="phone" class="input-box" placeholder="Enter Phone Number" pattern="[0-9]{10}" maxlength="10" required>
+        <input type="password" name="password" class="input-box" placeholder="Create Password" required>
+        <button type="submit" class="login-btn">Sign Up</button>
+        <div class="links">
+            <a onclick="showLogin()">Already have an account? Login</a>
+        </div>
+    </form>
+
+
+    <script>
+        function showSignup() {
+            document.getElementById("loginBox").classList.add("hidden");
+            document.getElementById("signupBox").classList.remove("hidden");
+        }
+
+        function showLogin() {
+            document.getElementById("signupBox").classList.add("hidden");
+            document.getElementById("loginBox").classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>
