@@ -10,7 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO user (fullName, email, phoneNumber, password) VALUES ('$fullname', '$email', '$phone', '$password')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "✅ User registered successfully!";
+        // Redirect to thirdpage.html
+        header("Location: ../frontend/thirdpage.html");
+        exit(); // Always call exit after header redirect
     } else {
         echo "❌ Error: " . $conn->error;
     }
